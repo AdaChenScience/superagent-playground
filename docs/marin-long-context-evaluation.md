@@ -17,9 +17,9 @@
 - **packing**：把多篇文档首尾相接填满定长序列，减少浪费。
 - **padding / masking**：padding 用占位符把短序列补到定长；masking 指定哪些位置不参与注意力或 loss。
 - **macro**：先算子数据集分数再等权平均；某子集没数据会扭曲结果。
-- **dropless**：MoE 路由不因专家容量上限丢弃 token；相对的是会丢 token 的 dropping。
+- **dropless**：MoE（混合专家）路由不因专家容量上限丢弃 token；相对的是会丢 token 的 dropping。
 - **CP**：context parallelism，把一条长序列切到多张 GPU 上并行计算。
-- **qk_mult**：长上下文外推时对 attention 的 query-key 缩放做的修正系数。
+- **qk_mult**：长上下文外推时对注意力中 query-key 缩放做的修正系数。
 
 ## 时间线
 
@@ -49,7 +49,7 @@ dlwh 先提出两个小修：零 token 标签不计入整体 macro；Hero 评测
 
 ### 7. 65K 正式切换（2026-11-01～11-02）
 
-[#10821](https://github.com/marin-community/marin/issues/10821) 记录 16K→65K 计划与执行：11-01 确定交接步为 step-372,000（390,251 步的 95.3%），10-31 选定 CP1×EP64、capacity factor（专家容量系数）1.5、qk_mult 1.66，而非更快的 CP4：CP1 每步比 CP4 慢 4.7%，但丢 token 少 2.5 倍，且 CP4 的 dropless 评测在 [#10709](https://github.com/marin-community/marin/pull/10709) 合并前会让下一步训练失败。部署 [#10820](https://github.com/marin-community/marin/pull/10820) 于 11-02T02:55:41Z 合并；03:25Z 启动 65K 子运行，04:03Z 运行代理自报通过全部 gate（放行检查）：中位步时 16.05 s、drop 约 3.5e-4、50 步 loss 比父运行低 0.020（[#10821 评论](https://github.com/marin-community/marin/issues/10821#issuecomment-6568749068)，2026-11-02T04:03:06Z）。这是作者报告，尚无独立复核；运行代理预计 11-05T15:00Z 左右跑完。（观察于 2026-11-02T04:47Z）
+[#10821](https://github.com/marin-community/marin/issues/10821) 记录 16K→65K 计划与执行：11-01 确定交接步为 step-372,000（390,251 步的 95.3%），10-31 选定 CP1×EP64（1 路上下文并行 × 64 路专家并行）、capacity factor（专家容量系数）1.5、qk_mult 1.66，而非更快的 CP4：CP1 每步比 CP4 慢 4.7%，但丢 token 少 2.5 倍，且 CP4 的 dropless 评测在 [#10709](https://github.com/marin-community/marin/pull/10709) 合并前会让下一步训练失败。部署 [#10820](https://github.com/marin-community/marin/pull/10820) 于 11-02T02:55:41Z 合并；03:25Z 启动 65K 子运行，04:03Z 运行代理自报通过全部 gate（放行检查）：中位步时 16.05 s、drop 约 3.5e-4、50 步 loss 比父运行低 0.020（[#10821 评论](https://github.com/marin-community/marin/issues/10821#issuecomment-6568749068)，2026-11-02T04:03:06Z）。这是作者报告，尚无独立复核；运行代理预计 11-05T15:00Z 左右跑完。（观察于 2026-11-02T04:47Z）
 
 ### 8. 后续评测安排与风险
 
