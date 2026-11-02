@@ -121,9 +121,9 @@
     }
   ],
   "key_conclusions": [
-    "65K cutover is the main new event: handoff at step-372000 (95.3% of 390,251; 0.84T tokens/4.7% left; 18,251 steps), CP1×EP64, capacity factor 1.5, qk_mult 1.66; #10820 merged 2026-11-02T02:55:41Z, child launched 03:25Z, six agent-reported gates passed at 04:03Z (step 372,102).",
-    "The 65K phase is running, not finished: median 16.05 s/step, mean drop 4.058e-4, peak HBM 127.8 GiB, control-window loss −0.02009 vs the 16K parent; projected finish ~2026-11-05T15:00Z. The source's '−15% tok/s' was a projection; measured throughput change is about −10.4% (16.05 vs 14.38 s) to −11.0% (logged tok/s).",
-    "No 65K eval result exists by 05:30Z: first eval at step 375,000 (~11-02T17:20Z) and permanent checkpoint at 378,000 (~11-03T07:00Z) are both after the cutoff. Eval packs at the training length, so Paloma macro may step and eval_regressed (2% threshold) may fire; this is a risk, not an observed regression.",
+    "65K cutover is the main new event: handoff at step-372000 (95.3% of 390,251; 0.84T tokens/4.7% left; 18,251 steps), CP1×EP64, capacity factor 1.5, qk_mult 1.66; #10820 merged 2026-11-02T02:55:41Z, child launched 03:25Z, six post-switch checks passed at 04:03Z (step 372,102, agent-reported).",
+    "The 65K phase is running, not finished: median 16.05 s/step, mean drop 4.058e-4, peak HBM 127.8 GiB, control-window loss delta −0.02009 vs the 16K parent (it did not trigger the set anomaly threshold; not the same as “no jump”); projected finish ~2026-11-05T15:00Z. The source's '-15% tok/s' was a projection; measured throughput change is about −10.4% (16.05 vs 14.38 s) to −11.0% (logged tok/s).",
+    "No 65K eval result exists by 05:30Z: the first eval is expected at step 375,000 (~11-02T17:20Z) and the permanent checkpoint at 378,000 (~11-03T07:00Z); both are after the cutoff. Eval packs at the training length, so Paloma macro may step and eval_regressed (2% threshold) may fire; this is a risk, not an observed regression.",
     "There is no long-context capability benchmark above 32K. The 65K phase is judged on loss (including held-out Paloma loss at 65K packing), not on a capability benchmark; #7638 (RULER) was auto-closed 2026-10-24.",
     "A gradient-spike investigation (#10677) reproduced one spike exactly on the step-324000 batch at 324000 weights and pinned it to one 16K sequence/token/op; later spikes were not reproduced at their own weights. #10783 added a global gradient clip at 1.0 (merged 10-30), and the hero relaunched as hero-gradclip-step356k; the 50-step gate was GO, but the clip never fired on the hero (0/50, 0/197). It did fire in one-rack rt1/rt2 tests.",
     "The 10-29 outage was a distinct IMEX/NCCL OOM incident: attempts 1–15 failed, attempt 16 resumed at step-352321 at 20:47:17Z after a human operator migrated to rack 399. It is not the gradient-spike event; no evidence links the two.",
@@ -159,7 +159,14 @@
     "claims_checked": 22,
     "special_checks": 14,
     "result": "about 20 of 22 claims confirmed; corrections applied to retry count, 325710 attribution, 32K-eval wording, stage labels and #10618 status",
-    "not_a_correctness_guarantee": true
+    "not_a_correctness_guarantee": true,
+    "acceptance_guidance": {
+      "codex_acceptance_turns": 2,
+      "terminal_user_decisions": 0,
+      "startup_comment_url": "https://github.com/AdaChenScience/superagent-playground/issues/3#issuecomment-6569792751",
+      "first_acceptance_url": "https://github.com/AdaChenScience/superagent-playground/issues/3#issuecomment-6570006606",
+      "second_acceptance_url": "https://github.com/AdaChenScience/superagent-playground/issues/3#issuecomment-6570091548"
+    }
   },
   "deliverables": [
     "docs/pilot-001/brief.md",
