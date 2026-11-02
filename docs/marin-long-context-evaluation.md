@@ -37,13 +37,13 @@ Hero 原计划 4K→8K（约 50%）→65K（约 95%）（[#8435 正文](https://
 
 ### 4. 设备组显存问题与 #10711 的修订（2026-10-26～30）
 
-[#10709](https://github.com/marin-community/marin/pull/10709) 说明了长上下文评测的组织方式本身会带来显存问题。评测需要按上下文长度把 GPU 临时分成新的通信分组（mesh），这些分组训练时没用过；创建它们会额外占用显存，评测结束回到训练时，训练要用的显存就不够。单机架 65K 的 CP4 评测里，一次评测让每块 GPU 多占约 7.4 GiB，而当时只剩约 5.8 GiB 余量，下一步训练因此分配失败。方案是复用训练已有的 GPU 分组；据 PR 作者报告，改后同一单机架 65K CP4 能连续跑两次 dropless 评测并继续训练，Paloma macro 约 2.05。只验证了单机架，11 机架未测。
+[#10709](https://github.com/marin-community/marin/pull/10709) 说明了长上下文评测的组织方式本身会带来显存问题。评测需要按上下文长度把 GPU 临时分成新的通信分组（mesh，设备分组），这些分组训练时没用过；创建它们会额外占用显存，评测结束回到训练时，训练要用的显存就不够。单机架 65K、CP 4 路的评测里，一次评测让每块 GPU 多占约 7.4 GiB，而当时只剩约 5.8 GiB 余量，下一步训练因此分配失败。方案是复用训练已有的 GPU 分组；据 PR 作者报告，改后同一单机架 65K、CP 4 路能连续跑两次 dropless 评测并继续训练，Paloma macro 约 2.05。只验证了单机架，11 机架未测。
 
-[#10711](https://github.com/marin-community/marin/pull/10711) 初版把 65K/262K 评测放在新分组上，自动评审指出会复现显存问题（[评论](https://github.com/marin-community/marin/pull/10711#issuecomment-6409591208)，2026-10-26T06:18:56Z）；作者改用 [#10709](https://github.com/marin-community/marin/pull/10709) 的设备组复用，并把评测长度限制在训练长度以内（[评论](https://github.com/marin-community/marin/pull/10711#issuecomment-6410180643)，06:59:58Z）。最终设计是每个长度一套指标（如 `eval_dropless/seq_len_4096/...`），无前缀指标对应训练长度；短语料 padding+masking；整体 macro 排除零 token 标签。作者报告 3,578 个受影响的 CPU 用例通过、CI 绿；ClassicLarry 于 10-30 批准（[review](https://github.com/marin-community/marin/pull/10711#pullrequestreview-5716334825)），但追问保留 partial chunk 是否改变 4K/16K 数据（[评论](https://github.com/marin-community/marin/pull/10711#issuecomment-6529741854)，2026-10-30T17:54:31Z）。截至观察：#10711 未合并，观察时 GitHub 标记 `mergeable=false`/`dirty`（瞬时状态，当时与 main 冲突），PR 正文称尚无 GPU 演练；#10709 也未合并（`blocked`，无评审）。（观察于 2026-11-02T04:47Z）
+[#10711](https://github.com/marin-community/marin/pull/10711) 初版把 65K/262K 评测放在新分组上，自动评审指出会复现显存问题（[评论](https://github.com/marin-community/marin/pull/10711#issuecomment-6409591208)，2026-10-26T06:18:56Z）；作者改用 [#10709](https://github.com/marin-community/marin/pull/10709) 的设备组复用，并把评测长度限制在训练长度以内（[评论](https://github.com/marin-community/marin/pull/10711#issuecomment-6410180643)，06:59:58Z）。最终设计是每个长度一套指标（如 `eval_dropless/seq_len_4096/...`），无前缀指标对应训练长度；短语料 padding+masking；整体 macro 排除零 token 标签。作者报告 3,578 个受影响的 CPU 用例通过、CI 绿；ClassicLarry 于 10-30 批准（[review](https://github.com/marin-community/marin/pull/10711#pullrequestreview-5716334825)），但追问保留 partial chunk（最后一段未填满的序列）是否改变 4K/16K 数据（[评论](https://github.com/marin-community/marin/pull/10711#issuecomment-6529741854)，2026-10-30T17:54:31Z）。截至观察：#10711 未合并，观察时 GitHub 标记 `mergeable=false`/`dirty`（瞬时状态，当时与 main 冲突），PR 正文称尚无 GPU 演练；#10709 也未合并（`blocked`，无评审）。（观察于 2026-11-02T04:47Z）
 
 ### 5. 65K 切换与后续评测（2026-11-01～02）
 
-[#10821](https://github.com/marin-community/marin/issues/10821) 记录 16K→65K：11-01 确定在 step-372,000（约 95.3%）交接，10-31 选定 CP1×EP64（1 路上下文并行 × 64 路专家并行）、capacity factor（专家容量系数）1.5、qk_mult 1.66，而非更快的 CP4：CP1 每步比 CP4 慢 4.7%，但丢 token 少 2.5 倍，且 CP4 的 dropless 评测在 #10709 合并前会让下一步训练失败。部署 [#10820](https://github.com/marin-community/marin/pull/10820) 于 11-02T02:55:41Z 合并；03:25Z 启动 65K 子运行，04:03Z 运行代理自报通过全部 gate：中位 16.05 s/step、drop 约 3.5e-4、50 步 loss 比父运行低 0.020（[#10821 评论](https://github.com/marin-community/marin/issues/10821#issuecomment-6568749068)，2026-11-02T04:03:06Z）。这是作者报告，尚无独立复核；预计 11-05T15:00Z 左右跑完。
+[#10821](https://github.com/marin-community/marin/issues/10821) 记录 16K→65K：11-01 确定在 step-372,000（约 95.3%）交接，10-31 选定 CP1×EP64（1 路上下文并行 × 64 路专家并行）、capacity factor（专家容量系数）1.5、qk_mult 1.66，而非更快的 CP4：CP1 每步比 CP4 慢 4.7%，但丢 token 少 2.5 倍，且 CP 4 路的 dropless 评测在 #10709 合并前会让下一步训练失败。部署 [#10820](https://github.com/marin-community/marin/pull/10820) 于 11-02T02:55:41Z 合并；03:25Z 启动 65K 子运行，04:03Z 运行代理自报通过全部 gate（放行检查）：中位 16.05 s/step、drop 约 3.5e-4、50 步 loss 比父运行低 0.020（[#10821 评论](https://github.com/marin-community/marin/issues/10821#issuecomment-6568749068)，2026-11-02T04:03:06Z）。这是作者报告，尚无独立复核；预计 11-05T15:00Z 左右跑完。
 
 后续评测仍是未决点：评测按 65K 打包，Paloma macro 可能阶跃并误触发 `eval_regressed`（[#10821 的 E4](https://github.com/marin-community/marin/issues/10821)）；首次 65K eval 约 11-02T17:20Z（step 375,000），永久 checkpoint 约 11-03T07:00Z（step 378,000）；32K 以上仍无长上下文能力评测（RULER issue [#7638](https://github.com/marin-community/marin/issues/7638) 已因不活跃被自动关闭）。分长度评测要等 [#10711](https://github.com/marin-community/marin/pull/10711)，计划 65K 之后、262K 之前落地；262K 还依赖 [#10618](https://github.com/marin-community/marin/pull/10618) 等，截至观察时均未合并。（观察于 2026-11-02T04:48Z）
 
@@ -53,10 +53,10 @@ Hero 原计划 4K→8K（约 50%）→65K（约 95%）（[#8435 正文](https://
 
 | 事项 | 方案/提出 | 代码 | CPU 测试 | GPU 演练 | 合并 | 主训练采用 |
 |---|---|---|---|---|---|---|
-| 16K 切换 | [#9615](https://github.com/marin-community/marin/issues/9615)，10-01 | [#10101](https://github.com/marin-community/marin/pull/10101) 配置改动 | 未专门报告 | 单机架 3 seed×100 步 | 10-14 合并 | 10-14 起使用 |
+| 16K 切换 | [#9615](https://github.com/marin-community/marin/issues/9615)，10-01 | [#10101](https://github.com/marin-community/marin/pull/10101) 配置改动 | 未专门报告 | 单机架 3 个种子×100 步 | 10-14 合并 | 10-14 起使用 |
 | 262K 短数据集/零 token | 10-25 外部观察，10-26 确认 | [#10711](https://github.com/marin-community/marin/pull/10711) | 3,578 用例（作者报告） | 无 | 未合并 | 未采用 |
 | 多长度评测 | 10-26 | [#10711](https://github.com/marin-community/marin/pull/10711) | 同上，CI 绿 | 无 | 未合并 | 未采用 |
-| 设备组复用 | [#10709](https://github.com/marin-community/marin/pull/10709) | [#10709](https://github.com/marin-community/marin/pull/10709) | CI 绿 | 单机架 65K CP4 | 未合并 | 65K 用 CP1，未用 CP4 |
+| 设备组复用 | [#10709](https://github.com/marin-community/marin/pull/10709) | [#10709](https://github.com/marin-community/marin/pull/10709) | CI 绿 | 单机架 65K、CP 4 路 | 未合并 | 65K 采用 CP 1 路，未用 4 路 |
 | 65K 切换 | [#10821](https://github.com/marin-community/marin/issues/10821)，10-31/11-01 | [#10820](https://github.com/marin-community/marin/pull/10820) | 未专门报告 | 单机架 C1/C2（作者报告） | 11-02T02:55 合并 | 11-02T03:25 起 65K |
 | 262K 阶段 | 计划中 | [#10618](https://github.com/marin-community/marin/pull/10618) 等 | — | — | 未合并 | 截至观察时未见启动记录 |
 
