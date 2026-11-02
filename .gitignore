@@ -1,0 +1,17 @@
+# Local agent runtime and credentials are not project deliverables.
+.superagent-home/
+.superagent-runtime/
+.superagent-tools/
+.dsh/
+.env
+.env.*
+!.env.example
+credentials*.json
+hosts.yml
+*.log
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+session.v4.jsonl.zstd
+node_modules/
