@@ -1,0 +1,171 @@
+{
+  "pilot": "001",
+  "kind": "marin-video-topic-and-learning-workbench",
+  "generated_at_utc": "2026-11-02T05:30:00Z",
+  "observation_window": {
+    "start_utc": "2026-10-19T05:30:00Z",
+    "end_utc": "2026-11-02T05:30:00Z",
+    "days": 14
+  },
+  "scope": "Marin 535B-A23B main line: hero run, 16K→65K cutover, gradient-spike mitigation, eval/measurement, 262K preparation",
+  "access": "read-only public GitHub REST via gh; W&B and mtracker not used as evidence",
+  "sources": [
+    {
+      "key": "issue-8435",
+      "url": "https://github.com/marin-community/marin/issues/8435",
+      "state": "open",
+      "updated_at_utc": "2026-10-26T07:00:00Z"
+    },
+    {
+      "key": "issue-8506",
+      "url": "https://github.com/marin-community/marin/issues/8506",
+      "state": "open",
+      "updated_at_utc": "2026-11-02T04:04:48Z"
+    },
+    {
+      "key": "issue-10821",
+      "url": "https://github.com/marin-community/marin/issues/10821",
+      "state": "open",
+      "updated_at_utc": "2026-11-02T04:37:01Z",
+      "last_confirmed_step": 372102
+    },
+    {
+      "key": "pr-10820",
+      "url": "https://github.com/marin-community/marin/pull/10820",
+      "state": "closed",
+      "merged": true,
+      "merged_at_utc": "2026-11-02T02:55:41Z",
+      "note": "65K deploy; commit 6e6924fedd per #10821"
+    },
+    {
+      "key": "issue-10677",
+      "url": "https://github.com/marin-community/marin/issues/10677",
+      "state": "open",
+      "updated_at_utc": "2026-10-30T06:10:51Z"
+    },
+    {
+      "key": "pr-10783",
+      "url": "https://github.com/marin-community/marin/pull/10783",
+      "state": "closed",
+      "merged": true,
+      "merged_at_utc": "2026-10-30T13:41:20Z",
+      "note": "gradient clip 1.0; commit 8aac0db3d9"
+    },
+    {
+      "key": "pr-10711",
+      "url": "https://github.com/marin-community/marin/pull/10711",
+      "state": "open",
+      "merged": false,
+      "mergeable_state_at_0530z": "dirty",
+      "head_sha": "eea42ac9a3a197345bf6f762709fb6aed7c0e0aa",
+      "updated_at_utc": "2026-10-30T17:57:23Z",
+      "review": "approved by ClassicLarry 2026-10-30T17:45:57Z",
+      "cpu_tests": 3578,
+      "gpu_rehearsal": false,
+      "note": "approved but unmerged; unanswered 1-rack partial-chunk request"
+    },
+    {
+      "key": "pr-10709",
+      "url": "https://github.com/marin-community/marin/pull/10709",
+      "state": "open",
+      "merged": false,
+      "mergeable_state_at_0530z": "blocked",
+      "head_sha": "0fe59f55d9b66684a927d49e5e1d72794c41f6bb",
+      "updated_at_utc": "2026-10-26T04:35:01Z",
+      "review": "no human reviews; one-rack only; 11 racks untested"
+    },
+    {
+      "key": "pr-10618",
+      "url": "https://github.com/marin-community/marin/pull/10618",
+      "state": "open",
+      "merged": false,
+      "mergeable_state_at_0530z": "dirty",
+      "review": "approved by ravwojdyla 2026-10-26T20:32:27Z",
+      "note": "promised 65K CP4 rack validation never posted; needed for 262K",
+      "updated_at_utc": "2026-10-26T20:32:28Z"
+    },
+    {
+      "key": "issue-7638",
+      "url": "https://github.com/marin-community/marin/issues/7638",
+      "state": "closed",
+      "closed_at_utc": "2026-10-24T04:38:14Z",
+      "note": "RULER/evalchemy; auto-closed not_planned; no capability benchmark above 32K"
+    },
+    {
+      "key": "pr-10556",
+      "url": "https://github.com/marin-community/marin/pull/10556",
+      "state": "open",
+      "merged": false,
+      "note": "routing precision; open/blocked, not part of the 65K run"
+    },
+    {
+      "key": "issue-10785",
+      "url": "https://github.com/marin-community/marin/issues/10785",
+      "state": "closed",
+      "note": "FP32 saved-O one-rack experiment; opened and closed 2026-10-30, not adopted"
+    }
+  ],
+  "background": [
+    {
+      "key": "pr-10101",
+      "url": "https://github.com/marin-community/marin/pull/10101",
+      "merged_at_utc": "2026-10-14T02:06:04Z",
+      "note": "16K switch; outside the 14-day window"
+    },
+    {
+      "key": "issue-9615",
+      "url": "https://github.com/marin-community/marin/issues/9615",
+      "state": "closed",
+      "closed_at_utc": "2026-10-14T18:18:54Z",
+      "note": "4K/8K/16K experiment; outside the window"
+    }
+  ],
+  "key_conclusions": [
+    "65K cutover is the main new event: handoff at step-372000 (95.3% of 390,251; 0.84T tokens/4.7% left; 18,251 steps), CP1×EP64, capacity factor 1.5, qk_mult 1.66; #10820 merged 2026-11-02T02:55:41Z, child launched 03:25Z, six agent-reported gates passed at 04:03Z (step 372,102).",
+    "The 65K phase is running, not finished: median 16.05 s/step, mean drop 4.058e-4, peak HBM 127.8 GiB, control-window loss −0.02009 vs the 16K parent; projected finish ~2026-11-05T15:00Z. The source's '−15% tok/s' was a projection; measured throughput change is about −10.4% (16.05 vs 14.38 s) to −11.0% (logged tok/s).",
+    "No 65K eval result exists by 05:30Z: first eval at step 375,000 (~11-02T17:20Z) and permanent checkpoint at 378,000 (~11-03T07:00Z) are both after the cutoff. Eval packs at the training length, so Paloma macro may step and eval_regressed (2% threshold) may fire; this is a risk, not an observed regression.",
+    "There is no long-context capability benchmark above 32K. The 65K phase is judged on loss (including held-out Paloma loss at 65K packing), not on a capability benchmark; #7638 (RULER) was auto-closed 2026-10-24.",
+    "A gradient-spike investigation (#10677) reproduced one spike exactly on the step-324000 batch at 324000 weights and pinned it to one 16K sequence/token/op; later spikes were not reproduced at their own weights. #10783 added a global gradient clip at 1.0 (merged 10-30), and the hero relaunched as hero-gradclip-step356k; the 50-step gate was GO, but the clip never fired on the hero (0/50, 0/197). It did fire in one-rack rt1/rt2 tests.",
+    "The 10-29 outage was a distinct IMEX/NCCL OOM incident: attempts 1–15 failed, attempt 16 resumed at step-352321 at 20:47:17Z after a human operator migrated to rack 399. It is not the gradient-spike event; no evidence links the two.",
+    "Eval measurement matters: an independent observer measured ~0.031 lower Paloma macro at 16K vs 4K on nearly the same weights (restored from the same checkpoint, a few extra steps); at 262K, short PTB/WikiText-103 corpora would yield zero-token tags and distort the macro. #10711 addresses this but is approved, open/dirty, and has no GPU rehearsal.",
+    "#10709 is open/blocked with one-rack 65K CP4 evidence (+7.4 GiB non-pool vs 5.8 GiB headroom, 90.49 GiB allocation failure) and no 11-rack test. #10618 is approved but dirty/unmerged, and its promised 65K CP4 rack validation never appeared. 262K has not started.",
+    "The 16K switch (#10101, 2026-10-14) and #9615 are background, not new progress in this window."
+  ],
+  "uncertainties": [
+    "65K gate numbers are agent/author-reported; W&B curves were not read and no third party re-measured the run.",
+    "The clip's effectiveness is unproven: it did not fire on the hero (0/50, 0/197) and fired only in one-rack rt1/rt2 tests; the 50-step trial proves no regression, not protection.",
+    "The 10-29 outage's exact IMEX ownership and safe-recovery procedure remain unconfirmed; attempts 10 and 14 are not logged, so the retry count cannot be fully enumerated.",
+    "The step-325710 and step-353060 spikes were never reproduced at their own weights; only the step-324000 mechanism is established. Do not generalize the single-token/op chain to 325710/353060.",
+    "The 4K re-evaluation of all checkpoints was promised for after the run finishes; no public record by 05:30Z, and it may have happened internally without a public post.",
+    "mtracker is LLM-generated and has at least two inconsistencies with GitHub ('step 372,300', 'stopped after 372,058'); its numbers were not used.",
+    "A code-only observation from #10711's patch: HERO_FIXED_EVAL_SEQ_LENS=(4096,65_536,262_144) filtered by ≤ training length would, at 65K, evaluate 4K and 65K but drop the 16K series. Authors have not discussed this; treat as an open question, not a conclusion."
+  ],
+  "follow_ups": [
+    "First 65K eval at step 375,000 (~2026-11-02T17:20Z) and whether eval_regressed fires; compare Paloma macro to the 16K parent.",
+    "Permanent checkpoint at step 378,000 (~11-03T07:00Z) and the projected 65K finish (~11-05T15:00Z).",
+    "Whether #10711 merges, gets a GPU rehearsal, and lands before the 262K phase; ClassicLarry's requested one-rack 4K/16K partial-chunk comparison.",
+    "Whether #10709 is validated on 11 racks and used for CP4 65K/262K evals; #10618 status and its missing rack validation.",
+    "Whether the 4K re-evaluation of all checkpoints happens and corrects the ~0.03 packing offset; whether independent forecasts are scored."
+  ],
+  "deferred": [
+    "10-29 IMEX/NCCL outage as a standalone video topic (single bot source, human operator recovery, root cause partly unconfirmed).",
+    "#10428 checkpoint averaging/format SFT and #10388 RL readiness: side tracks or older measurement windows.",
+    "#10556 routing precision / #10785 FP32 saved-O: not merged/adopted, not a main-line progress event.",
+    "#10121/#10145/#10610/#10368: performance or infrastructure PRs, not a context-capability result.",
+    "#8827 prompt completions: no new content in the window."
+  ],
+  "verification": {
+    "method": "internal subagent re-read primary comments/PRs/commits; comment IDs resolved by ID; PRs via pulls/reviews/commits/check-runs",
+    "claims_checked": 22,
+    "special_checks": 14,
+    "result": "about 20 of 22 claims confirmed; corrections applied to retry count, 325710 attribution, 32K-eval wording, stage labels and #10618 status",
+    "not_a_correctness_guarantee": true
+  },
+  "deliverables": [
+    "docs/pilot-001/brief.md",
+    "docs/pilot-001/teaching.md",
+    "docs/pilot-001/evidence.md",
+    "docs/pilot-001/run-record.md",
+    "docs/pilot-001/tracking.json"
+  ]
+}
