@@ -1,72 +1,58 @@
-# Marin 研究与视频选题工作台
+# Marin 研究与视频材料
 
-基于 DeepSeek Harness（DSH）和 Super-agent 的一次真实工作流实践：从 Marin 项目的公开讨论中筛选进展，核查证据，再整理成视频选题与教学材料。
+用 DeepSeek Super-agent 和 DSH 跟踪 Marin 的公开训练进展，经过研究、核查、教学改写和 Codex 验收，整理成没有预训练背景也能开始阅读的视频材料。
 
-**当前状态：私有展示整理版；完成一期试刊，尚未配置周期运行。** 试刊事实截点为 **2026-11-02 05:30 UTC（北京时间 13:30）**，不是实时项目状态。
+**先看成果：[长上下文导读](docs/video-001/learn.md) → [约 5–6 分钟口播稿与分镜](docs/video-001/script.md)。** 内容是截至 **2026-11-02 05:30 UTC（北京时间 13:30）** 的历史快照，不代表 Marin 实时状态。尚未录制试讲，也未完成真实初学者理解测试。
 
-## 我为什么做这件事
+## 这一期讲什么
 
-我关注 Marin 的大模型训练，也需要定期制作相关教学视频。GitHub 的更新多而分散，直接汇总容易堆满工程细节；我需要的是值得讲的变化、能理解的背景，以及支持结论的原始证据。
+Marin 将训练时一次处理的文本从约 1.6 万 token 延长到约 6.5 万。这里最值得解释的不是参数，而是三个问题：为什么要读更长的文本？怎么判断训练能继续跑？为什么“能跑”还不能证明“更会读长文”？
 
-这次用 Super-agent 跑了一轮从 GitHub 请求、子 Agent 分工、证据核查到 PR 交付的流程。重点是减少我逐条读资料、查错和改稿的负担，保留选题方向与发布决策。
-
-## 从哪里开始看
+导读用同一份通知在不同阅读范围下的例子解释长上下文；口播稿给出讲述顺序和画面建议；核查表保留原始讨论、证据范围以及不能下的结论。
 
 | 你想看什么 | 阅读入口 |
 | --- | --- |
-| Marin 最近有什么值得讲 | [试刊 001：三个排序选题](docs/pilot-001/brief.md) |
-| 推荐选题怎样讲清楚 | [教学材料：长上下文切换成功，离能力证明还有多远](docs/pilot-001/teaching.md) |
-| 这次 Agent 实践有什么设计与得失 | [案例复盘](docs/case-study.md) |
-| 想按相同要求运行一次 | [任务规范](docs/task-contract.md) → [运行说明](docs/runbook.md) |
+| 先把问题弄懂 | [零基础导读，含自测问题](docs/video-001/learn.md) |
+| 准备试讲 | [口播稿与分镜](docs/video-001/script.md) |
+| 核对数字、来源和限制 | [事实核查与制作记录](docs/video-001/fact-check.md) |
+| 了解 AI 工具怎样参与、哪里仍需返工 | [案例复盘](docs/case-study.md) |
+| 尝试相同工作流 | [任务规范](docs/task-contract.md) → [运行说明](docs/runbook.md) |
 
-## 这次实际怎样运行
+## 这个工作流实际做到了什么
 
-```text
-GitHub Issue 请求 / 后续评论
-           ↓
-Super-agent 关联原任务与执行会话
-           ↓
-执行 Agent 委派两个研究子 Agent（训练主线 / 评测）
-           ↓
-核查子 Agent 回读原始证据；写作子 Agent 接收材料及修正
-           ↓
-教学改写 → Humanizer 润色 → 执行 Agent 整合与检查
-           ↓
-更新同一 PR，回到原 Issue 交付
-```
+任务由 GitHub Issue 发起，Super-agent 将后续评论续接到原任务。执行 Agent 使用 DSH 的子 Agent 工具安排研究、核查和写作，更新同一 PR。Codex 检查内容和运行记录，把验收意见交回原任务，并做了明确记录的最终修订。
 
-研究分工并行进行；核查和写作有交接依赖，写作期间也接收核查修正。它不是四个 Agent 各写一遍，再把答案拼起来。
+第一轮试刊完成了三个排序选题，但材料仍偏难。第二轮聚焦长上下文，把工程记录改成导读、口播和核查表。核查纠正了“常规预测误差评测等于长文能力测试”“训练没出异常就等于能力提升”等表述风险。
 
-## 已验证的结果与限制
-
-- 四个子 Agent 实际执行；[运行记录](docs/pilot-001/run-record.md)保留职责、会话 ID 和交接说明。
-- 交付三个排序选题、一份教学材料、[证据表](docs/pilot-001/evidence.md)和[跟踪快照](docs/pilot-001/tracking.json)。
-- 核查纠正了重试次数、异常归因范围、评测类型等表述。正文经过两次 Codex 验收反馈后，才减少缩写并把技术细节移到附录。
-- 本轮有 **2 次 Codex 验收指导、0 次用户追加决策**，不能称为无人验收或零返工。
-- 未运行 Marin 训练或 GPU 实验；运行数字来自公开记录。未验证持续跟踪的稳定性，也没有多 Agent 对单 Agent 的速度、成本或准确率对照。
+这是一次可追溯的工具使用实践：能看到初稿、反馈、返工与交付。尚未验证周期跟踪的稳定性，没有单 Agent 对照、成本统计或准确率测量，不能据此证明多 Agent 更快、更便宜或更准确。
 
 ## 谁负责什么
 
-| 参与方 | 责任 |
+| 参与方 | 实际责任 |
 | --- | --- |
-| 仓库所有者 | 提出视频制作需求，确定读者、范围、交付和验收目标；决定是否采用及发布 |
-| Codex | 协助环境配置、任务派发、日志核对、两轮验收纠偏；完成本次展示文档整理 |
-| Super-agent | 请求与任务关联、执行会话管理、反馈续接、PR 与原讨论交付 |
-| DSH 与模型 | 提供执行工具、子 Agent 会话及模型推理；完成研究、判断、核查和写作 |
+| 仓库所有者 | 提出 Marin 视频需求，确定受众与交付目标，判断材料是否能讲懂并决定发布 |
+| Codex | 配置、派发任务、核对日志、验收纠偏、最终局部修订与仓库整理 |
+| Super-agent | 将请求关联到任务、管理执行会话、续接反馈、组织 PR 交付 |
+| 执行模型与子 Agent | 理解任务、选择具体分工、研究、核查、改写与整合 |
+| DSH | 提供模型执行环境、工具和子 Agent 会话能力 |
 
-本仓库是**使用、配置和评估开源框架的实践案例**，不是自研多 Agent 框架，也不是 Marin 官方发布渠道。上游将 Super-agent 定位为研究原型，非正式产品；本案例不改变这一定位。
+初始试刊的“研究、核查、写作”要求由 Codex 按用户需求写入任务；执行 Agent 决定了具体拆分并实际调用工具。不是用户亲手指派每个子 Agent，也不是 DSH 自行决定研究方向。详见[复盘](docs/case-study.md)。
 
-## 证据与历史
+本仓库展示**配置、使用和评估开源 Agent 框架的实践**，不是自研框架，也不是 Marin 或 DeepSeek 官方发布渠道。Super-agent 上游是研究原型。本仓库主要交付文档，不包含可直接启动的完整运行环境。
 
-- [原任务 Issue #3](https://github.com/AdaChenScience/superagent-playground/issues/3) / [交付 PR #4](https://github.com/AdaChenScience/superagent-playground/pull/4)：派发、追加反馈与交付历史；仓库私有期间需要访问权限。
-- [案例复盘](docs/case-study.md)：选题筛选、核查发现、返工与能力边界。
-- [早期长上下文专题](docs/marin-long-context-evaluation.md)：试刊前的学习产物，保留原始快照，不作为最新状态。
-- [公开前检查](docs/publication-review.md)：已查范围、待处理事项和未覆盖内容。当前没有公开或自动合并操作。
+## 历史与证据
 
-## 上游与来源
+- [Issue #3](https://github.com/AdaChenScience/superagent-playground/issues/3) / [PR #4](https://github.com/AdaChenScience/superagent-playground/pull/4)：原任务、追加反馈和交付历史。
+- [试刊 001 选题简报](docs/pilot-001/brief.md) / [试刊运行记录](docs/pilot-001/run-record.md)：第一轮探索，教学稿已由 video-001 继续改写。
+- [早期长上下文专题](docs/marin-long-context-evaluation.md)：更早的研究快照，不作为最新状态。
+- [公开检查记录](docs/publication-review.md)：检查范围、脱敏处理及未覆盖部分。
 
-- [DeepSeek Super-agent 研究原型](https://github.com/deepseek-ai/dsh-superagent-prototype)、[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)。本轮版本及本地适配见[运行说明](docs/runbook.md)。
-- [Marin](https://github.com/marin-community/marin)：事实来源，具体评论和 PR 链接保留在证据表中。
-- [Humanizer-zh](https://github.com/op7418/Humanizer-zh)：本轮使用本机修订版编辑规范，通过读取文件执行，不是训练了新的润色模型；不在本仓库重新分发该技能全文。
+公开材料保留过程摘要和来源，不上传本机登录配置、完整会话日志、数据库或临时研究文件。外部读者不能仅凭会话 ID 重放完整运行。
 
-当前没有为本仓库新增统一开源许可；上游项目和来源内容仍遵循各自许可。展示与第三方再分发许可是两件事。
+## 上游与内容许可
+
+- [DeepSeek Super-agent](https://github.com/deepseek-ai/dsh-superagent-prototype)、[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)：版本和本机适配见[运行说明](docs/runbook.md)。
+- [Marin](https://github.com/marin-community/marin)：事实来源，关键链接保留在核查表。
+- [Humanizer-zh](https://github.com/op7418/Humanizer-zh)：使用本机修订版编辑规范；不重新分发技能全文。
+
+本仓库未设置统一再分发许可；公开浏览不等于授予任意复用许可，上游和引用来源仍遵循各自许可。AI 参与生成和编辑，引用内容应以原始来源为准。

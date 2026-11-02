@@ -1,3 +1,5 @@
+> 历史初稿：保留第一轮交付与反馈的上下文。准备阅读或试讲请优先使用[新版导读](../video-001/learn.md)与[口播稿](../video-001/script.md)。
+
 # 教学稿：Marin 开始练习读更长的文本：切换成功，离能力证明还有多远？
 
 ## 开场（约 30 秒）
@@ -102,3 +104,4 @@ drop 是超过专家容量后，部分专家分配被丢弃的比例；它不表
 - 多长度评测的修法：[#10711](https://github.com/marin-community/marin/pull/10711)
 - RULER 接入：[#7638](https://github.com/marin-community/marin/issues/7638)
 - 4K/16K 打包测量：[#8435 c-6336070902](https://github.com/marin-community/marin/issues/8435#issuecomment-6336070902)
+
