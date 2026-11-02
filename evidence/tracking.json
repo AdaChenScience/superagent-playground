@@ -169,10 +169,9 @@
     }
   },
   "deliverables": [
-    "docs/pilot-001/brief.md",
-    "docs/pilot-001/teaching.md",
-    "docs/pilot-001/evidence.md",
-    "docs/pilot-001/run-record.md",
-    "docs/pilot-001/tracking.json"
+    "evidence/brief.md",
+    "evidence/evidence.md",
+    "evidence/run-record.md",
+    "evidence/tracking.json"
   ]
 }

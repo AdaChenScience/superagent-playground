@@ -20,13 +20,12 @@
 
 整理后的核心判断是：Marin 已进入更长上下文的训练阶段；切换后的短窗口检查提供运行状态信息；是否更擅长理解长文，需要看相应的能力测试。选题因此聚焦“怎样完成训练阶段切换”，而非直接宣称能力突破。
 
-[查看选题简报](../archive/docs/pilot-001/brief.md) · [查看来源与核查表](../archive/docs/pilot-001/evidence.md)
+[查看选题简报](../evidence/brief.md) · [查看来源与核查表](../evidence/evidence.md)
 
 ## 留下哪些可继续使用的材料
 
 - **研究结果**：三个排序选题、推荐理由、暂缓事项和关联来源。
-- **跟踪状态**：已检查的 Issue/PR、关键结论、待确认问题与后续观察点，保存在 [tracking.json](../archive/docs/pilot-001/tracking.json)。
-- **专题素材**：长上下文背景解释、导读与口播样稿，保存在[后续材料](../archive/docs/video-001/learn.md)中。
+- **跟踪状态**：已检查的 Issue/PR、关键结论、待确认问题与后续观察点，保存在 [tracking.json](../evidence/tracking.json)。
 - **执行记录**：子 Agent 分工、核查修正、追加反馈和提交历史，可从 [PR #4](https://github.com/AdaChenScience/superagent-playground/pull/4) 查看。
 
 下一次研究可以从跟踪状态中的待确认事项继续查证，并将新证据与已有结论对照。

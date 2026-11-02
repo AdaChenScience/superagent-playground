@@ -6,21 +6,12 @@
 
 ## 我怎样使用它
 
-借助 Codex 配置 DeepSeek 官方 API、DSH 和 Super-agent，把这个仓库作为任务入口与交付位置。在 GitHub Issue 中提出研究需求，执行 Agent 安排子 Agent 分别研究训练主线和评测问题，再交给核查与写作 Agent，最后通过 PR 提交结果。
+1. **我提出需求。** 在与 Codex 的对话中说明要关注 Marin 的哪些进展、材料给谁看。Codex 协助配置 DSH、Super-agent 和 DeepSeek 官方 API，并将研究要求写入 GitHub Issue #3。
+2. **Super-agent 把消息交给对应任务。** 它接收 GitHub 消息，关联已有任务和执行会话，让执行 Agent 带着之前的上下文继续工作。
+3. **执行 Agent 安排研究。** 它通过 DSH 创建两路研究子 Agent，分别调查训练主线和评测；再安排核查与写作，接收结果和修正意见，统一整合文件。
+4. **执行 Agent 提交，反馈继续回到原任务。** 结果提交到 PR #4。Codex 检查后将修改要求写回 Issue #3，Super-agent 再投递给原执行 Agent，由它修改文件并更新同一 PR。
 
-后续补充要求和验收意见继续写入原 Issue，由 Super-agent 续接到原任务，执行 Agent 修改已有产物并更新同一 PR。
-
-```text
-提出研究需求 → Issue #3 → Super-agent 关联任务
-                               ↓
-                          执行 Agent
-                    ┌──────────┴──────────┐
-                 训练主线研究          评测研究
-                    └──────────┬──────────┘
-                         核查、整理与交付
-                               ↓
-                       PR #4 → 反馈 → 更新
-```
+![从研究需求到 PR 交付与反馈续接](assets/task-flow.svg)
 
 [查看任务如何执行](docs/workflow.md)
 
@@ -42,4 +33,6 @@
 | 执行 Agent | 决定具体研究拆分，委派子 Agent，整合结果、提交 PR |
 | DSH | 提供模型会话、文件与命令工具、子 Agent 创建和消息传递 |
 
-[运行记录与原始材料](archive/README.md)
+[运行记录](evidence/run-record.md) · [原始选题简报](evidence/brief.md)
+
+工具来源：[Super-agent](https://github.com/deepseek-ai/dsh-superagent-prototype) · [DSH](https://github.com/deepseek-ai/deepseek-harness)
