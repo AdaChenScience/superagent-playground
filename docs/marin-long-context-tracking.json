@@ -129,7 +129,7 @@
   ],
   "key_findings": [
     "4K/16K 单机架对比（#9615，作者报告，2026-10-01）：8K 吞吐 −1.6%、16K −3.1%；丢 token 比例 1.86e-4→8.29e-4（4.5×）→2.94e-3（16×）。据此跳过 8K，16K 于 2026-10-14 部署（#10101）。",
-    "评测打包长度本身会改变 Paloma macro：同一 checkpoint 的 16K 评测比 4K 低约 0.031（独立观察者 bethehand，2026-10-22T08:14:54Z；qk_mult=1.3 时约 0.028）。Marin 承诺跑完后用 4K 重评所有 checkpoint；截至观察时未见重评记录。",
+    "评测打包长度本身会改变 Paloma macro：从同一 checkpoint 恢复、各跑少量步骤后，16K 评测的 Paloma macro 比权重几乎相同的 4K 评测低约 0.031（独立观察者 bethehand，2026-10-22T08:14:54Z；qk_mult=1.3 时约 0.028）。Marin 承诺跑完后用 4K 重评所有 checkpoint；截至观察时未见重评记录。",
     "262K 阶段短数据集会静默破坏 macro：PTB 与 WikiText-103 验证集不足一条 262,144-token 序列，零 token 标签使 Paloma macro 变成 14 子集均值（约 +0.06），顶层 macro 约 −0.14（2026-10-25 外部观察；2026-10-26 dlwh 源码确认）。",
     "最初的“65K 封顶”方案（把 eval packing 上限设为 65,536 token）在 2026-10-26 当天被改为多长度评测 + 短语料 padding/masking，随后又收敛为只评训练长度及以下；65K/262K 等训练到达后再加。截至观察时，未见该中间态进入任何运行的记录。",
     "长上下文评测换 mesh 会产生训练未用过的设备组，XLA 新建的 NCCL communicator 不计入 allocator 池：单机架 65K CP4×EP16 多出约 7.4 GiB/GPU，超过约 5.8 GiB 余量，下一步训练 OOM（#10709）。修法是复用训练 (data, expert) 组；#10711 最终采用该实现。",
