@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "baseline_round": 1,
+  "task": "Marin 535B-A23B 长上下文评测跟踪（首轮基线）",
+  "checked_at_utc": "2026-11-02T04:48:15Z",
+  "upstream_repository": "marin-community/marin",
+  "access_mode": "read-only public GitHub REST via gh",
+  "observation_window_utc": "2026-11-02T04:42:00Z/2026-11-02T04:50:00Z",
+  "dashboard_clue": {
+    "url": "https://mtracker.oa.dev/hero-run-535b",
+    "http_status_observed": 200,
+    "used_as_evidence": false,
+    "note": "仅作为线索；本次未打开其内容作为事实来源，所有数字均回到 GitHub Issue/PR 正文或评论核对"
+  },
+  "targets": [
+    {
+      "key": "issue-8435",
+      "type": "issue",
+      "url": "https://github.com/marin-community/marin/issues/8435",
+      "title": "[Hero Run] 535B-A23B on 18T tokens",
+      "observed": {
+        "state": "open",
+        "updated_at_utc": "2026-10-26T07:00:00Z",
+        "comments_reviewed": "2026-09-01T00:00:00Z..2026-10-26T07:00:00Z 中与长上下文/评测相关的评论"
+      }
+    },
+    {
+      "key": "issue-9615",
+      "type": "issue",
+      "url": "https://github.com/marin-community/marin/issues/9615",
+      "title": "Experiment: Hero throughput and expert drops at 8K and 16K context",
+      "observed": {
+        "state": "closed",
+        "updated_at_utc": "2026-10-14T18:18:55Z",
+        "closed_at_utc": "2026-10-14T18:18:54Z"
+      }
+    },
+    {
+      "key": "pr-10711",
+      "type": "pull_request",
+      "url": "https://github.com/marin-community/marin/pull/10711",
+      "title": "[eval] Evaluate Hero at multiple context lengths",
+      "observed": {
+        "state": "open",
+        "merged": false,
+        "draft": false,
+        "mergeable": false,
+        "mergeable_state": "dirty",
+        "head_sha": "eea42ac9a3a197345bf6f762709fb6aed7c0e0aa",
+        "updated_at_utc": "2026-10-30T17:57:23Z",
+        "review_state": "APPROVED by ClassicLarry at 2026-10-30T17:45:57Z; no GPU rehearsal",
+        "ci": "unit-tests, CodeQL, unit (marin 1/3..3/3), unit (levanter), levanter-tpu, levanter-torch, grug-variant-diff success"
+      }
+    },
+    {
+      "key": "pr-10709",
+      "type": "pull_request",
+      "url": "https://github.com/marin-community/marin/pull/10709",
+      "title": "[grug] Reuse training device groups for the hero dropless eval",
+      "observed": {
+        "state": "open",
+        "merged": false,
+        "mergeable": true,
+        "mergeable_state": "blocked",
+        "head_sha": "0fe59f55d9b66684a927d49e5e1d72794c41f6bb",
+        "updated_at_utc": "2026-10-26T04:35:01Z",
+        "review_state": "no reviews",
+        "ci": "unit-tests success, CodeQL success"
+      }
+    },
+    {
+      "key": "issue-10821",
+      "type": "issue",
+      "url": "https://github.com/marin-community/marin/issues/10821",
+      "title": "[hero] Switch the hero run from 16K to 65K context",
+      "observed": {
+        "state": "open",
+        "updated_at_utc": "2026-11-02T04:37:01Z",
+        "latest_comment_utc": "2026-11-02T04:03:06Z"
+      }
+    }
+  ],
+  "related": [
+    {
+      "key": "pr-10101",
+      "url": "https://github.com/marin-community/marin/pull/10101",
+      "title": "[grug] Switch the hero to 16K context with qk_mult 1.48",
+      "state": "closed",
+      "merged": true,
+      "merged_at_utc": "2026-10-14T02:06:04Z",
+      "head_sha": "ca7354ec5f8e5191e676e7a1aee32172b124f04b"
+    },
+    {
+      "key": "pr-10820",
+      "url": "https://github.com/marin-community/marin/pull/10820",
+      "title": "[grug] Switch the hero to 65K context at permanent step 372000",
+      "state": "closed",
+      "merged": true,
+      "merged_at_utc": "2026-11-02T02:55:41Z",
+      "head_sha": "eb73ef71212079d53179a3763295dfa912374c35",
+      "note": "Issue 10821 正文称部署 commit 为 6e6924fedd"
+    },
+    {
+      "key": "pr-9890",
+      "url": "https://github.com/marin-community/marin/pull/9890",
+      "title": "[grug] Keep hero eval and FLOPs metrics continuous across a relaunch",
+      "state": "closed",
+      "merged": true,
+      "merged_at_utc": "2026-10-13T17:53:25Z"
+    },
+    {
+      "key": "pr-10618",
+      "url": "https://github.com/marin-community/marin/pull/10618",
+      "title": "[grug] Let the hero launcher run context parallelism",
+      "state": "open",
+      "merged": false,
+      "head_sha": "82f2b8d076ef6992159a22c7b9bec5220fc4ce81",
+      "updated_at_utc": "2026-10-26T20:32:28Z",
+      "note": "262K 上下文并行所需；未合并"
+    },
+    {
+      "key": "issue-7638",
+      "url": "https://github.com/marin-community/marin/issues/7638",
+      "title": "[evals] Run RULER long-context eval through the evalchemy fork",
+      "state": "closed",
+      "closed_at_utc": "2026-10-24T04:38:14Z",
+      "note": "因长期无活动被 bot 自动关闭；长上下文能力评测仍未接入 hero"
+    }
+  ],
+  "key_findings": [
+    "4K/16K 单机架对比（#9615，作者报告，2026-10-01）：8K 吞吐 −1.6%、16K −3.1%；丢 token 比例 1.86e-4→8.29e-4（4.5×）→2.94e-3（16×）。据此跳过 8K，16K 于 2026-10-14 部署（#10101）。",
+    "评测打包长度本身会改变 Paloma macro：同一 checkpoint 的 16K 评测比 4K 低约 0.031（独立观察者 bethehand，2026-10-22T08:14:54Z；qk_mult=1.3 时约 0.028）。Marin 承诺跑完后用 4K 重评所有 checkpoint，尚未发生。",
+    "262K 阶段短数据集会静默破坏 macro：PTB 与 WikiText-103 验证集不足一条 262,144-token 序列，零 token 标签使 Paloma macro 变成 14 子集均值（约 +0.06），顶层 macro 约 −0.14（2026-10-25 外部观察；2026-10-26 dlwh 源码确认）。",
+    "最初的“65K 封顶”方案（把 eval packing 上限设为 65,536 token）在 2026-10-26 当天被改为多长度评测 + 短语料 padding/masking，随后又收敛为只评训练长度及以下；65K/262K 等训练到达后再加。该中间态未进入运行。",
+    "长上下文评测换 mesh 会产生训练未用过的设备组，XLA 新建的 NCCL communicator 不计入 allocator 池：单机架 65K CP4×EP16 多出约 7.4 GiB/GPU，超过约 5.8 GiB 余量，下一步训练 OOM（#10709）。修法是复用训练 (data, expert) 组；#10711 最终采用该实现。",
+    "65K 切换已发生（#10821）：#10820 于 2026-11-02T02:55:41Z 合并，03:25Z 启动，04:03Z 自报全部 gate 通过（中位 16.05 s/step、drop 约 3.5e-4、峰值 127.8 GiB、loss 低 0.020）。此为运行代理自报，无独立复核；预计 2026-11-05T15:00Z 左右完成。",
+    "65K 阶段仍按训练长度 65K 打包评测，Paloma macro 可能阶跃并触发 eval_regressed（#10821 E4）；首次 65K eval 约 2026-11-02T17:20Z（step 375,000），永久 checkpoint 约 2026-11-03T07:00Z（step 378,000）。固定长度多长度评测（#10711）未合并，计划 65K 之后、262K 之前落地。",
+    "截至观察：#10711 open 但 mergeable=false/dirty（与 main 冲突），已被 ClassicLarry 批准但无 GPU 演练；#10709 open/blocked，无评审；262K 阶段所需 #10618 未合并。"
+  ],
+  "open_questions": [
+    "#10711 何时解决与 main 的冲突并合并；ClassicLarry 要求的单机架 4K/16K partial-chunk 对比是否会显示 macro 差异（若有，4K/16K 可能保留旧行为）；GPU 显存与耗时演练是否通过。",
+    "65K 首次 eval（约 2026-11-02T17:20Z，step 375,000）的 Paloma macro 阶跃幅度，是否触发 eval_regressed，以及团队如何解释其与 4K 时代预测的可比性。",
+    "#10709 的 11 机架布局与 CP4 65K 评测是否会被验证；262K 阶段若采用 CP4，是否仍保留全部 16 个 Paloma 子集。",
+    "跑完后承诺的 4K 全 checkpoint 重评是否给出可比的固定长度序列，从而校正约 0.03 的打包偏差和各路预测。",
+    "65K 剩余约 1.8 万步的 drop/吞吐是否与单机架外推一致；step-378,000 永久 checkpoint 与 262K 交接是否按计划。"
+  ],
+  "limitations": [
+    "只读公开 GitHub；未打开 W&B 报表内容，也未引用 mtracker 看板的具体数字。",
+    "未运行 Marin 代码或 GPU 任务；#10711/#10709 的代码结论来自 PR 作者与自动评审，未独立复跑。",
+    "PR/Issue 状态是 2026-11-02T04:48:15Z 的快照，后续可能变化；下一轮应先重新读取上述 URL 的 state/mergeable/updated_at 再更新结论。"
+  ],
+  "next_update_triggers": [
+    "#10711 合并或发生新的关键评论/冲突解决",
+    "#10709 合并或 11 机架验证结果出现",
+    "65K 首次计划 eval（step 375,000）结果与 eval_regressed 告警",
+    "65K 运行完成或 262K 阶段启动",
+    "Marin 完成 4K 重评或接入长上下文能力评测（RULER 等）"
+  ]
+}
